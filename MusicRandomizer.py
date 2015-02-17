@@ -13,6 +13,7 @@ def randomize(library_dir, output_dir, tracks_per_dir=25):
 
     return True
 
+
 # Gets list of tracks from specified dir
 def get_tracks(library_dir):
     tracks = []
@@ -22,12 +23,10 @@ def get_tracks(library_dir):
 
     return tracks
 
+
 # Creates diractories with randomly selected tracks
 def copy_tracks(tracks, output_dir, tracks_per_dir):
     # We have to copy tracksinto empty directory
-    if os.listdir(output_dir) != []:
-        sys.exit('! Output dir is not empty')
-
     dir_now = 0
     tracks_copied = tracks_per_dir
     random.shuffle(tracks)
@@ -39,12 +38,12 @@ def copy_tracks(tracks, output_dir, tracks_per_dir):
             new_track_name = str(tracks_copied) + '.mp3'
             shutil.copyfile(
                 track,
-                output_dir + '\\' + str(dir_now) + '\\' + new_track_name
+                os.path.join(output_dir, str(dir_now), new_track_name)
             )
         else:
             dir_now += 1
             tracks_copied = 0
-            os.mkdir(output_dir + '\\' + str(dir_now))
+            os.mkdir(os.path.join(output_dir, str(dir_now)))
 
     return True
 
