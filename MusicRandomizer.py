@@ -3,7 +3,8 @@
 
 import os, shutil, fnmatch, random, sys
 
-# Somethins like controller of this script
+
+# Something like controller of this script
 def randomize(library_dir, output_dir, tracks_per_dir=25):
     tracks = get_tracks(library_dir)
     if len(tracks) > 0:
@@ -24,28 +25,42 @@ def get_tracks(library_dir):
     return tracks
 
 
-# Creates diractories with randomly selected tracks
+# Creates directories with randomly selected tracks
 def copy_tracks(tracks, output_dir, tracks_per_dir):
-    # We have to copy tracksinto empty directory
+    # We have to copy tracks into empty directory
     dir_now = 0
     tracks_copied = tracks_per_dir
     random.shuffle(tracks)
+    tracks_amount = len(tracks)
+    current_track = 0
 
     for track in tracks:
-        if int(tracks_copied) < int(tracks_per_dir):
-            tracks_copied += 1
-
-            new_track_name = str(tracks_copied) + '.mp3'
-            shutil.copyfile(
-                track,
-                os.path.join(output_dir, str(dir_now), new_track_name)
-            )
-        else:
+        if int(tracks_copied) >= int(tracks_per_dir):
             dir_now += 1
             tracks_copied = 0
             os.mkdir(os.path.join(output_dir, str(dir_now)))
 
+        tracks_copied += 1
+
+        new_track_name = str(tracks_copied) + '.mp3'
+        shutil.copyfile(
+            track,
+            os.path.join(output_dir, str(dir_now), new_track_name)
+        )
+        
+        current_track += 1
+        render_progressbar(current_track, tracks_amount)
+
     return True
+
+
+# Renders progressbar on console
+def render_progressbar(current, total, bar_length=20):
+    percent = float(current) / total
+    hashes = '#' * int(round(percent * bar_length))
+    spaces = ' ' * (bar_length - len(hashes))
+    sys.stdout.write("\rProgress: [{0}] {1}%\r".format(hashes + spaces, int(round(percent * 100))))
+    sys.stdout.flush()
 
 
 if __name__ == '__main__':
