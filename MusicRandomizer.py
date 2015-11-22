@@ -68,12 +68,12 @@ if __name__ == '__main__':
         library_dir = sys.argv[1]
         output_dir = sys.argv[2]
         # Default value
-        traks_per_dir = 25
+        tracks_per_dir = 25
 
         if len(sys.argv) >= 5 and sys.argv[3] == '-n':
-            traks_per_dir = sys.argv[4]
+            tracks_per_dir = sys.argv[4]
 
-        randomize(library_dir, output_dir, traks_per_dir)
+        randomize(library_dir, output_dir, tracks_per_dir)
 
     else:
         print('! Something wrong, check your paths')
